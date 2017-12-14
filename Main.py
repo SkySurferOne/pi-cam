@@ -45,7 +45,7 @@ if __name__ == '__main__':
         b = cv2.getTrackbarPos('B', 'image')
         s = cv2.getTrackbarPos(switch, 'image')
 
-        print(colormap_num)
+        # print(colormap_num)
         if colormap_num == -1:
             colormap_num = 0
 
