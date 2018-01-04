@@ -9,7 +9,7 @@ if __name__ == '__main__':
     camera_thread = threading.Thread(target=cam.start_capturing)
     camera_thread.start()
 
-    webapp_thread = threading.Thread(target=run_app, args=(cam, '192.168.0.22',))
+    webapp_thread = threading.Thread(target=run_app, args=(cam,))
     webapp_thread.start()
 
 
