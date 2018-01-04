@@ -22,6 +22,8 @@ class Camera:
             # Capture frame-by-frame
             ret, frame = self.cap.read()
 
+            # process
+
             cv2.imshow(self.frame_name, frame)
 
             if cv2.waitKey(5) & 0xFF == 27:
