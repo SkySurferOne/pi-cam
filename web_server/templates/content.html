@@ -2,8 +2,76 @@
 {% block content %}
     <h1>{{ header_text }}</h1>
 
-    <button data-effect-name="no-filter" type="button" class="btn btn-secondary btn-lg btn-block effect-btn">No filter</button>
-    <button data-effect-name="sunny" type="button" class="btn btn-secondary btn-lg btn-block effect-btn">Sunny</button>
-    <button data-effect-name="old-photo" type="button" class="btn btn-secondary btn-lg btn-block effect-btn">Old photo</button>
-    <button data-effect-name="test" type="button" class="btn btn-secondary btn-lg btn-block effect-btn">Test</button>
+    <div class="card-panel">
+        <div class="card">
+            <a data-toggle="collapse" data-parent="#filter-list" href="#collapseFilters"
+                       aria-expanded="true" aria-controls="collapseFilters">
+                <div class="card-header" id="filtersHeading">
+                    <h5 class="mb-0">
+                          Filters
+                    </h5>
+                </div>
+            </a>
+
+             <div id="collapseFilters" class="collapse show" aria-labelledby="filtersHeading">
+                 <div class="card-content">
+                    <button data-effect-name="no-filter" type="button" class="btn btn-secondary btn-lg btn-block effect-btn">No filter</button>
+                    <button data-effect-name="sunny" type="button" class="btn btn-secondary btn-lg btn-block effect-btn">Sunny</button>
+                    <button data-effect-name="old-photo" type="button" class="btn btn-secondary btn-lg btn-block effect-btn">Old photo</button>
+                    <button data-effect-name="test" type="button" class="btn btn-secondary btn-lg btn-block effect-btn">Test</button>
+                 </div>
+             </div>
+        </div>
+
+
+        <div class="card">
+            <a data-toggle="collapse" data-parent="#filter-list" href="#collapseFilterOpt"
+                       aria-expanded="false" aria-controls="collapseFilterOpt">
+                <div class="card-header" id="filtersOptHeading">
+                    <h5 class="mb-0">
+                          Filter options
+                    </h5>
+                </div>
+            </a>
+
+             <div id="collapseFilterOpt" class="collapse" aria-labelledby="filtersOptHeading">
+                 <div class="card-content">No options</div>
+             </div>
+        </div>
+    </div>
+
+    <button id="make-photo-btn" type="button" class="btn btn-primary btn-lg btn-block">Make photo</button>
+
+    <!-- Photo Modal -->
+    <div class="modal fade" id="photo-modal" tabindex="-1" role="dialog" aria-labelledby="photoModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Photo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+              <div class="photo-wrapper text-center">
+                <img src="http://www.catster.com/wp-content/uploads/2017/06/small-kitten-meowing.jpg"
+                     id="captured-photo" class="img-fluid rounded" alt="Captured photo">
+              </div>
+
+              <form>
+                <div class="form-group">
+                    <label for="email" class="form-control-label">Mail:</label>
+                    <input type="text" class="form-control" id="email">
+                </div>
+              </form>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Send photo</button>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}

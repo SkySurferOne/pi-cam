@@ -11,6 +11,26 @@ body {
     text-align: center;
 }
 
-.effect-btn {
+.btn {
     cursor: pointer;
+}
+
+.card-panel {
+    margin-bottom: 30px;
+}
+
+.card-content {
+    padding: 15px;
+}
+
+.card a:hover {
+    text-decoration: none;
+}
+
+.photo-wrapper {
+    margin-bottom: 15px;
+}
+
+.photo-wrapper img {
+    max-height: 300px;
 }

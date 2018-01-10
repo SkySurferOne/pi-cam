@@ -4,12 +4,16 @@
     var endoints = {
         EFFECT_BUNDLE: apiBaseURL + 'effect-bundle'
     };
+    var photoModalOptions = {};
+
     var $effectBtns;
+    var $photoModal;
+    var $makePhotoBtn;
 
     var onReady = function () {
-        console.log('Heloo!');
-
         $effectBtns = $('.effect-btn');
+        $photoModal = $('#photo-modal');
+        $makePhotoBtn = $('#make-photo-btn');
 
         initEvents();
     };
@@ -25,8 +29,13 @@
         });
     };
 
+    var onMakePhotoBtnClick = function () {
+      $($photoModal).modal(photoModalOptions);
+    };
+
     var initEvents = function () {
         $effectBtns.click(effectBtnsOnClick);
+        $makePhotoBtn.click(onMakePhotoBtnClick);
     };
 
     $(document).ready(onReady());
