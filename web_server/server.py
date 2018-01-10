@@ -8,10 +8,16 @@ env = Environment(
 app = Flask(__name__)
 cam = None
 
+
 @app.route("/")
 def hello():
-    cam.test()
     return render_template('content.html', title='Pi-cam', header_text='Choose your filter!')
+
+
+@app.route("/filter")
+def set_filter():
+    cam.set_effect_bundle()
+    return "OK"
 
 
 def run_app(camera_obj, host='127.0.0.1', port=5000):
