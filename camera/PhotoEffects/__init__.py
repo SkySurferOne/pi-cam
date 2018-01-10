@@ -7,3 +7,5 @@ from .EffectManager import EffectManager
 from .PhotoEffect import PhotoEffect
 
 from .TestEffectBundle import TestEffectBundle
+from .SunnyEffectBundle import SunnyEffectBundle
+from .OldPhotoEffectBundle import OldPhotoEffectBundle

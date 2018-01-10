@@ -1,6 +1,8 @@
 import numpy as np
 import cv2
+from enum import Enum
 
+from camera.PhotoEffects import SunnyEffectBundle, OldPhotoEffectBundle
 from camera.PhotoEffects.TestEffectBundle import TestEffectBundle
 
 
@@ -40,6 +42,18 @@ class Camera:
         self.cap.release()
         cv2.destroyAllWindows()
 
-    def set_effect_bundle(self):
-        print('set_effect_bundle')
-        self.current_effect_bundle = TestEffectBundle()
+    def set_effect_bundle(self, effect_enum):
+        if self.EffectBundleEnum.SUNNY == effect_enum:
+            self.current_effect_bundle = SunnyEffectBundle()
+        elif self.EffectBundleEnum.OLD_PHOTO == effect_enum:
+            self.current_effect_bundle = OldPhotoEffectBundle()
+        elif self.EffectBundleEnum.TEST == effect_enum:
+            self.current_effect_bundle = TestEffectBundle()
+        elif self.EffectBundleEnum.NO_FILTER == effect_enum:
+            self.current_effect_bundle = None
+
+    class EffectBundleEnum(Enum):
+        SUNNY = 'sunny'
+        OLD_PHOTO = 'old-photo'
+        TEST = 'test'
+        NO_FILTER = 'no-filter'

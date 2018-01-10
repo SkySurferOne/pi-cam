@@ -10,3 +10,7 @@ body {
     margin-bottom: 15px;
     text-align: center;
 }
+
+.effect-btn {
+    cursor: pointer;
+}
