@@ -2,32 +2,22 @@ import cv2
 import numpy as np
 
 from camera.PhotoEffects.PhotoEffect import PhotoEffect
+from enum import Enum
+from math import floor
 
-
-# def laplacian(img):
-#     return cv2.Laplacian(img, cv2.CV_64F)
-
-
-# def sobel(img, axis='x'):
-#     if axis == 'x':
-#         return cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=5)
-#
-#     return cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=5)
-
-
-def nothing(x):
+def nothing(self, x):
     pass
 
-
-class AddingObjectsPhotoEffect(PhotoEffect):
-    def __init__(self, object_image) -> None:
+class AddObjectsPhotoEffect(PhotoEffect):
+    def __init__(self, object_image, object_position) -> None:
 
         '''
             :param object_image: filename
             '''
         super().__init__()
         self.object_image = object_image
-        #
+        self.object_position = object_position
+
 
     def apply_filter(self, image):
         cascPath = "haarcascade_frontalface_default.xml"
@@ -54,19 +44,8 @@ class AddingObjectsPhotoEffect(PhotoEffect):
             minNeighbors=5,
             minSize=(90, 90)
         )
-        for (x, y, w, h) in faces:
-            obj_img = cv2.imread(self.object_image)
-            res = cv2.resize(obj_img, (w, h), interpolation=cv2.INTER_CUBIC)
-            # rows, cols, channels = res.shape
-            roi = image[y:(y + h), x:(x + w)]
 
-            obj_imggray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
-            ret, mask = cv2.threshold(obj_imggray, 10, 255, cv2.THRESH_BINARY)
-            mask_inv = cv2.bitwise_not(mask)
-            img1_bg = cv2.bitwise_and(roi, roi, mask=mask)
-            img2_fg = cv2.bitwise_and(res, res, mask=mask_inv)
-            dst = cv2.add(img1_bg, img2_fg)
-            image[y:(y + h), x:(x + w)] = dst
+        self.add_object_to_image(faces, image)
 
         colormap_num = cv2.getTrackbarPos('colormap', 'trackbar_image')
         r = cv2.getTrackbarPos('R', 'trackbar_image')
@@ -91,3 +70,34 @@ class AddingObjectsPhotoEffect(PhotoEffect):
 
     def set_colormap_num(self, colormap_num):
         self.colormap_num = colormap_num
+
+    def add_object_to_image(self, faces, image):
+        for (x, y, w, h) in faces:
+            obj_img = cv2.imread(self.object_image)
+            if self.object_position == self.ObjectPositionEnum.ABOVE:
+                height, width = obj_img.shape[:2]
+                res = cv2.resize(obj_img, (w, floor((w/width) * height)), interpolation=cv2.INTER_CUBIC)
+                roi = image[y-floor((w/width) * height):y, x:(x + w)]
+
+                obj_imggray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
+                ret, mask = cv2.threshold(obj_imggray, 10, 255, cv2.THRESH_BINARY)
+                mask_inv = cv2.bitwise_not(mask)
+                img1_bg = cv2.bitwise_and(roi, roi, mask=mask)
+                img2_fg = cv2.bitwise_and(res, res, mask=mask_inv)
+                dst = cv2.add(img1_bg, img2_fg)
+                image[y - floor((w / width) * height):y, x:(x + w)] = dst
+            else:
+                res = cv2.resize(obj_img, (w, h), interpolation=cv2.INTER_CUBIC)
+                roi = image[y:(y + h), x:(x + w)]
+
+                obj_imggray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
+                ret, mask = cv2.threshold(obj_imggray, 10, 255, cv2.THRESH_BINARY)
+                mask_inv = cv2.bitwise_not(mask)
+                img1_bg = cv2.bitwise_and(roi, roi, mask=mask)
+                img2_fg = cv2.bitwise_and(res, res, mask=mask_inv)
+                dst = cv2.add(img1_bg, img2_fg)
+                image[y:(y + h), x:(x + w)] = dst
+
+    class ObjectPositionEnum(Enum):
+        ON = 'on'
+        ABOVE = 'above'

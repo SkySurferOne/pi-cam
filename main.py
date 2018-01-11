@@ -120,9 +120,5 @@ if __name__ == '__main__':
 
     webapp_thread = threading.Thread(target=run_app, args=(cam, args.server_ip, ))
     webapp_thread.start()
-# >>>>>>> master
 
-    # When everything done, release the capture
-    cap.release()
-    cv2.destroyAllWindows()
 
