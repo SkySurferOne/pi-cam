@@ -23,7 +23,7 @@ class AddObjectsPhotoEffect(PhotoEffect):
         cascPath = "haarcascade_frontalface_default.xml"
         faceCascade = cv2.CascadeClassifier(cascPath)
         #
-        cv2.namedWindow('trackbar_image')
+        '''cv2.namedWindow('trackbar_image')
         cv2.createTrackbar('colormap', 'trackbar_image', 0, 12, nothing)
         cv2.createTrackbar('R', 'trackbar_image', 0, 255, nothing)
         cv2.createTrackbar('G', 'trackbar_image', 0, 255, nothing)
@@ -33,7 +33,7 @@ class AddObjectsPhotoEffect(PhotoEffect):
         cv2.createTrackbar(switch, 'trackbar_image', 0, 1, nothing)
         #
         # cap = cv2.VideoCapture(0)
-        #
+        #'''
         anterior = 0
         #
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -42,34 +42,14 @@ class AddObjectsPhotoEffect(PhotoEffect):
             gray,
             scaleFactor=1.1,
             minNeighbors=5,
-            minSize=(90, 90)
+            minSize=(60, 60)
         )
 
         self.add_object_to_image(faces, image)
+        return image
 
-        colormap_num = cv2.getTrackbarPos('colormap', 'trackbar_image')
-        r = cv2.getTrackbarPos('R', 'trackbar_image')
-        g = cv2.getTrackbarPos('G', 'trackbar_image')
-        b = cv2.getTrackbarPos('B', 'trackbar_image')
-        s = cv2.getTrackbarPos(switch, 'trackbar_image')
-
-        print(colormap_num)
-        if colormap_num == -1:
-            colormap_num = 0
-
-        if colormap_num != 0:
-            img = cv2.applyColorMap(image, colormap_num - 1)
-        else:
-            img = image
-
-        if s != 0:
-            color = np.zeros(shape=img.shape, dtype=np.uint8)
-            color[:] = [b, g, r]
-            img = cv2.add(img, color)
-        return img
-
-    def set_colormap_num(self, colormap_num):
-        self.colormap_num = colormap_num
+    #def set_colormap_num(self, colormap_num):
+        #self.colormap_num = colormap_num
 
     def add_object_to_image(self, faces, image):
         for (x, y, w, h) in faces:
@@ -79,8 +59,18 @@ class AddObjectsPhotoEffect(PhotoEffect):
                 res = cv2.resize(obj_img, (w, floor((w/width) * height)), interpolation=cv2.INTER_CUBIC)
                 roi = image[y-floor((w/width) * height):y, x:(x + w)]
 
-                obj_imggray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
-                ret, mask = cv2.threshold(obj_imggray, 10, 255, cv2.THRESH_BINARY)
+                #obj_imggray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
+                #ret, mask = cv2.threshold(obj_img, 10, 255, cv2.THRESH_BINARY)
+                mask = None
+                hsv = cv2.cvtColor(res, cv2.COLOR_BGR2HSV)
+
+                # define range of color in HSV
+                red2lower1 = np.array([0, 0, 255])
+                red2upper1 = np.array([0, 0, 255])
+
+                    # threshold the HSV image to get only red colors
+                mask = cv2.inRange(hsv, red2lower1, red2upper1)
+                
                 mask_inv = cv2.bitwise_not(mask)
                 img1_bg = cv2.bitwise_and(roi, roi, mask=mask)
                 img2_fg = cv2.bitwise_and(res, res, mask=mask_inv)
@@ -89,9 +79,21 @@ class AddObjectsPhotoEffect(PhotoEffect):
             else:
                 res = cv2.resize(obj_img, (w, h), interpolation=cv2.INTER_CUBIC)
                 roi = image[y:(y + h), x:(x + w)]
+                
+                #
+                mask = None
+                hsv = cv2.cvtColor(res, cv2.COLOR_BGR2HSV)
 
-                obj_imggray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
-                ret, mask = cv2.threshold(obj_imggray, 10, 255, cv2.THRESH_BINARY)
+                # define range of color in HSV
+                red2lower1 = np.array([0, 0, 255])
+                red2upper1 = np.array([0, 0, 255])
+
+                    # threshold the HSV image to get only red colors
+                mask = cv2.inRange(hsv, red2lower1, red2upper1)
+                
+                #
+                #obj_imggray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
+                #ret, mask = cv2.threshold(obj_imggray, 10, 255, cv2.THRESH_BINARY)
                 mask_inv = cv2.bitwise_not(mask)
                 img1_bg = cv2.bitwise_and(roi, roi, mask=mask)
                 img2_fg = cv2.bitwise_and(res, res, mask=mask_inv)

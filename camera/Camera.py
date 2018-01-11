@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from enum import Enum
 
-from camera.PhotoEffects import SunnyEffectBundle, OldPhotoEffectBundle
+from camera.PhotoEffects import SunnyEffectBundle, OldPhotoEffectBundle, GentlemanEffectBundle, RoyalEffectBundle
 from camera.PhotoEffects.TestEffectBundle import TestEffectBundle
 
 
@@ -49,6 +49,10 @@ class Camera:
             self.current_effect_bundle = OldPhotoEffectBundle()
         elif self.EffectBundleEnum.TEST == effect_enum:
             self.current_effect_bundle = TestEffectBundle()
+        elif self.EffectBundleEnum.GENTLEMAN == effect_enum:
+            self.current_effect_bundle = GentlemanEffectBundle()
+        elif self.EffectBundleEnum.ROYAL == effect_enum:
+            self.current_effect_bundle = RoyalEffectBundle()
         elif self.EffectBundleEnum.NO_FILTER == effect_enum:
             self.current_effect_bundle = None
 
@@ -56,4 +60,6 @@ class Camera:
         SUNNY = 'sunny'
         OLD_PHOTO = 'old-photo'
         TEST = 'test'
+        GENTLEMAN = 'gentleman'
+        ROYAL = 'royal'
         NO_FILTER = 'no-filter'
