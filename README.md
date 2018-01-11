@@ -7,6 +7,7 @@ Realtime image processing with web application.
 - numpy
 - flask
 - jinja2
+- Flask-Mail
 
 # How to run?
 ```python3 main.py -s 192.168.0.20```
