@@ -12,3 +12,7 @@ from .SunnyEffectBundle import SunnyEffectBundle
 from .OldPhotoEffectBundle import OldPhotoEffectBundle
 from .GentlemanEffectBundle import GentlemanEffectBundle
 from .RoyalEffectBundle import RoyalEffectBundle
+from .BeachEffectBundle import BeachEffectBundle
+from .HippieEffectBundle import HippieEffectBundle
+from .SkiingEffectBundle import SkiingEffectBundle
+from .UnderwaterEffectBundle import UnderwaterEffectBundle

@@ -2,7 +2,11 @@ import numpy as np
 import cv2
 from enum import Enum
 
+from camera.PhotoEffects import BeachEffectBundle
+from camera.PhotoEffects import HippieEffectBundle
+from camera.PhotoEffects import SkiingEffectBundle
 from camera.PhotoEffects import SunnyEffectBundle, OldPhotoEffectBundle, GentlemanEffectBundle, RoyalEffectBundle
+from camera.PhotoEffects import UnderwaterEffectBundle
 from camera.PhotoEffects.TestEffectBundle import TestEffectBundle
 
 
@@ -53,6 +57,14 @@ class Camera:
             self.current_effect_bundle = GentlemanEffectBundle()
         elif self.EffectBundleEnum.ROYAL == effect_enum:
             self.current_effect_bundle = RoyalEffectBundle()
+        elif self.EffectBundleEnum.UNDERWATER == effect_enum:
+            self.current_effect_bundle = UnderwaterEffectBundle()
+        elif self.EffectBundleEnum.SKIING == effect_enum:
+            self.current_effect_bundle = SkiingEffectBundle()
+        elif self.EffectBundleEnum.HIPPIE == effect_enum:
+            self.current_effect_bundle = HippieEffectBundle()
+        elif self.EffectBundleEnum.BEACH == effect_enum:
+            self.current_effect_bundle = BeachEffectBundle()
         elif self.EffectBundleEnum.NO_FILTER == effect_enum:
             self.current_effect_bundle = None
 
@@ -62,4 +74,8 @@ class Camera:
         TEST = 'test'
         GENTLEMAN = 'gentleman'
         ROYAL = 'royal'
+        UNDERWATER = 'underwater'
+        SKIING = 'skiing'
+        HIPPIE = 'hippie'
+        BEACH = 'beach'
         NO_FILTER = 'no-filter'

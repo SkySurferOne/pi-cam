@@ -5,6 +5,9 @@ from camera.PhotoEffects.PhotoEffect import PhotoEffect
 from enum import Enum
 from math import floor
 
+from camera.constants import ASSETS_DIR
+
+
 def nothing(self, x):
     pass
 
@@ -22,20 +25,7 @@ class AddObjectsPhotoEffect(PhotoEffect):
     def apply_filter(self, image):
         cascPath = "haarcascade_frontalface_default.xml"
         faceCascade = cv2.CascadeClassifier(cascPath)
-        #
-        '''cv2.namedWindow('trackbar_image')
-        cv2.createTrackbar('colormap', 'trackbar_image', 0, 12, nothing)
-        cv2.createTrackbar('R', 'trackbar_image', 0, 255, nothing)
-        cv2.createTrackbar('G', 'trackbar_image', 0, 255, nothing)
-        cv2.createTrackbar('B', 'trackbar_image', 0, 255, nothing)
-
-        switch = 'Colorize\n0 : OFF \n1 : ON'
-        cv2.createTrackbar(switch, 'trackbar_image', 0, 1, nothing)
-        #
-        # cap = cv2.VideoCapture(0)
-        #'''
         anterior = 0
-        #
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
         faces = faceCascade.detectMultiScale(
@@ -48,52 +38,39 @@ class AddObjectsPhotoEffect(PhotoEffect):
         self.add_object_to_image(faces, image)
         return image
 
-    #def set_colormap_num(self, colormap_num):
-        #self.colormap_num = colormap_num
 
     def add_object_to_image(self, faces, image):
         for (x, y, w, h) in faces:
-            obj_img = cv2.imread(self.object_image)
+            obj_img = cv2.imread(ASSETS_DIR +self.object_image)
             if self.object_position == self.ObjectPositionEnum.ABOVE:
                 height, width = obj_img.shape[:2]
                 res = cv2.resize(obj_img, (w, floor((w/width) * height)), interpolation=cv2.INTER_CUBIC)
                 roi = image[y-floor((w/width) * height):y, x:(x + w)]
-
-                #obj_imggray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
-                #ret, mask = cv2.threshold(obj_img, 10, 255, cv2.THRESH_BINARY)
-                mask = None
                 hsv = cv2.cvtColor(res, cv2.COLOR_BGR2HSV)
-
-                # define range of color in HSV
-                red2lower1 = np.array([0, 0, 255])
-                red2upper1 = np.array([0, 0, 255])
-
-                    # threshold the HSV image to get only red colors
-                mask = cv2.inRange(hsv, red2lower1, red2upper1)
-                
+                greenmask = np.array([120, 100, 100])
+                mask = cv2.inRange(hsv, greenmask, greenmask)
                 mask_inv = cv2.bitwise_not(mask)
                 img1_bg = cv2.bitwise_and(roi, roi, mask=mask)
                 img2_fg = cv2.bitwise_and(res, res, mask=mask_inv)
                 dst = cv2.add(img1_bg, img2_fg)
                 image[y - floor((w / width) * height):y, x:(x + w)] = dst
+            elif self.object_position == self.ObjectPositionEnum.AROUND:
+                res = cv2.resize(obj_img, (2*w, 2*h), interpolation=cv2.INTER_CUBIC)
+                roi = image[(y - floor(h/2)):(y + h + floor(h/2)), (x - floor(w/2)):(x + w + floor(w/2))]
+                hsv = cv2.cvtColor(res, cv2.COLOR_BGR2HSV)
+                greenmask = np.array([120, 100, 100])
+                mask = cv2.inRange(hsv, greenmask, greenmask)
+                mask_inv = cv2.bitwise_not(mask)
+                img1_bg = cv2.bitwise_and(roi, roi, mask=mask)
+                img2_fg = cv2.bitwise_and(res, res, mask=mask_inv)
+                dst = cv2.add(img1_bg, img2_fg)
+                image[(y - floor(h / 2)):(y + h + floor(h / 2)), (x - floor(w / 2)):(x + w + floor(w / 2))] = dst
             else:
                 res = cv2.resize(obj_img, (w, h), interpolation=cv2.INTER_CUBIC)
                 roi = image[y:(y + h), x:(x + w)]
-                
-                #
-                mask = None
                 hsv = cv2.cvtColor(res, cv2.COLOR_BGR2HSV)
-
-                # define range of color in HSV
-                red2lower1 = np.array([0, 0, 255])
-                red2upper1 = np.array([0, 0, 255])
-
-                    # threshold the HSV image to get only red colors
-                mask = cv2.inRange(hsv, red2lower1, red2upper1)
-                
-                #
-                #obj_imggray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
-                #ret, mask = cv2.threshold(obj_imggray, 10, 255, cv2.THRESH_BINARY)
+                greenmask = np.array([120, 100, 100])
+                mask = cv2.inRange(hsv, greenmask, greenmask)
                 mask_inv = cv2.bitwise_not(mask)
                 img1_bg = cv2.bitwise_and(roi, roi, mask=mask)
                 img2_fg = cv2.bitwise_and(res, res, mask=mask_inv)
@@ -103,3 +80,4 @@ class AddObjectsPhotoEffect(PhotoEffect):
     class ObjectPositionEnum(Enum):
         ON = 'on'
         ABOVE = 'above'
+        AROUND = 'around'

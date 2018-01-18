@@ -1,3 +1,4 @@
+from camera.PhotoEffects import ColorMapPhotoEffect
 from camera.PhotoEffects import EffectBundle, AddObjectsPhotoEffect
 from camera.constants import ASSETS_DIR
 
@@ -7,9 +8,11 @@ class GentlemanEffectBundle(EffectBundle):
     def __init__(self) -> None:
         super().__init__()
 
-        object_effect = AddObjectsPhotoEffect(ASSETS_DIR + 'gentleman.jpg',
+        color_map_effect = ColorMapPhotoEffect(2)
+        object_effect = AddObjectsPhotoEffect('gentleman.png',
                                                                     AddObjectsPhotoEffect.ObjectPositionEnum.ON)
 
+        self.effect_manager.add(color_map_effect)
         self.effect_manager.add(object_effect)
 
     def apply(self, image):
