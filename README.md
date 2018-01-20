@@ -16,7 +16,6 @@ To do that create ```config.py``` file in the root folder and write MAIL_USERNAM
 ```
 MAIL_USERNAME = 'user@mail.com'
 MAIL_PASSWORD = 'password'
-
 ``` 
 Then you have to export environment variable PICAM_CONFIG with path to that file, for example:
 
