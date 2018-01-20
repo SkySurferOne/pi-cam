@@ -63,13 +63,25 @@
                 <div class="form-group">
                     <label for="email" class="form-control-label">Mail:</label>
                     <input type="text" class="form-control" id="email">
+
+                    <div id="success-alert" class="alert alert-success" role="alert">
+                        Sent successfully
+                    </div>
+
+                    <div id="error-alert" class="alert alert-danger" role="alert">
+                        Server error
+                    </div>
+
+                    <div id="warning-alert" class="alert alert-warning" role="alert">
+                        Email cannot be empty
+                    </div>
                 </div>
               </form>
           </div>
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Send photo</button>
+            <button id="send-photo-btn" type="button" class="btn btn-primary">Send photo</button>
           </div>
         </div>
       </div>

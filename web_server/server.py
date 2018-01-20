@@ -3,7 +3,7 @@ from flask_mail import Mail, Message
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 from camera import Camera
-from camera.constants import ASSETS_DIR, TMP_DIR
+from camera.constants import TMP_DIR
 
 env = Environment(
     loader=PackageLoader('web_server', 'templates'),
@@ -11,16 +11,10 @@ env = Environment(
 )
 
 app = Flask(__name__)
+app.config.from_object('default_config')
+app.config.from_envvar('PICAM_CONFIG')
 mail = Mail(app)
-app.config.update(dict(
-    DEBUG = True,
-    MAIL_SERVER = 'smtp.gmail.com',
-    MAIL_PORT = 587,
-    MAIL_USE_TLS = True,
-    MAIL_USE_SSL = False,
-    MAIL_USERNAME = 'my_username@gmail.com',
-    MAIL_PASSWORD = 'my_password',
-))
+
 cam = None
 
 
@@ -66,13 +60,13 @@ def get_photo(photo_name):
 def send_photo(photo_name):
     content = request.get_json()
     email = content['email']
-    print(email)
 
-    msg = Message("Hello " + photo_name,
-                  sender="picam@picam.com",
+    msg = Message('Photo from picam',
                   recipients=[email])
-    msg.body = "testing"
-    msg.html = "<b>testing</b>"
+    msg.html = "Hi,<br> that is your photo!"
+
+    with app.open_resource(TMP_DIR + photo_name) as fp:
+        msg.attach('photo-picam', "image/jpg", fp.read())
 
     with mail.connect() as conn:
         conn.send(msg)
@@ -84,4 +78,4 @@ def send_photo(photo_name):
 def run_app(camera_obj, host='127.0.0.1', port=5000):
     global cam
     cam = camera_obj
-    app.run(host=host, port=port)
+    app.run(host=host, port=port, debug=True, use_reloader=False)

@@ -1,11 +1,11 @@
-import numpy as np
-import cv2
 import datetime
 from enum import Enum
 
+import cv2
+
 from camera.PhotoEffects import SunnyEffectBundle, OldPhotoEffectBundle
 from camera.PhotoEffects.TestEffectBundle import TestEffectBundle
-from camera.constants import ASSETS_DIR, TMP_DIR
+from camera.constants import TMP_DIR
 
 
 class Camera:

@@ -34,3 +34,7 @@ body {
 .photo-wrapper img {
     max-height: 300px;
 }
+
+.modal input {
+    margin-bottom: 15px;
+}
