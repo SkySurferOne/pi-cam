@@ -11,7 +11,7 @@ def clear_tmp():
     for the_file in os.listdir(TMP_DIR):
         file_path = os.path.join(TMP_DIR, the_file)
         try:
-            if os.path.isfile(file_path):
+            if os.path.isfile(file_path) and the_file != '.gitkeep':
                 os.unlink(file_path)
         except Exception as e:
             print(e)
