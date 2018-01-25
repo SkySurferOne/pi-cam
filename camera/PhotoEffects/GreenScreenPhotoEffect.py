@@ -7,7 +7,7 @@ from camera.constants import ASSETS_DIR
 
 class GreenScreenPhotoEffect(PhotoEffect):
 
-    colors = ['red']
+    colors = ['red', 'green']
 
     def __init__(self, bg_image, screen_color='red') -> None:
         """
@@ -28,6 +28,8 @@ class GreenScreenPhotoEffect(PhotoEffect):
         self.screen_color = screen_color
 
     def apply_filter(self, image):
+        height, width = image.shape[:2]
+        self.cv_photo = cv2.resize(self.cv_photo, (width, height), interpolation=cv2.INTER_CUBIC)
         mask = None
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
@@ -43,7 +45,12 @@ class GreenScreenPhotoEffect(PhotoEffect):
             mask1 = cv2.inRange(hsv, red2lower1, red2upper1)
             mask2 = cv2.inRange(hsv, red2lower2, red2upper2)
             mask = cv2.add(mask1, mask2)
+        elif self.screen_color == 'green':
+            green_lower = np.array([110, 100,100])
+            green_upper = np.array([130, 255, 255])
 
+            # threshold the HSV image to get only red colors
+            mask = cv2.inRange(hsv, green_lower, green_upper)
         mask_inv = cv2.bitwise_not(mask)
 
         # bitwise-AND mask and original image

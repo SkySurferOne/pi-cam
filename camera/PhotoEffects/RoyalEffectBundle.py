@@ -9,7 +9,7 @@ class RoyalEffectBundle(EffectBundle):
     def __init__(self) -> None:
         super().__init__()
 
-        green_screen = GreenScreenPhotoEffect('palace.jpg', 'red')
+        green_screen = GreenScreenPhotoEffect('palace.png', 'red')
         object_effect = AddObjectsPhotoEffect('crown.png',AddObjectsPhotoEffect.ObjectPositionEnum.ABOVE)
 
         self.effect_manager.add(green_screen)
