@@ -1,6 +1,5 @@
 from camera.PhotoEffects import EffectBundle, AddObjectsPhotoEffect
 from camera.PhotoEffects import GreenScreenPhotoEffect
-from camera.constants import ASSETS_DIR
 
 
 

@@ -1,6 +1,6 @@
-import numpy as np
-import cv2
+import datetime
 from enum import Enum
+import cv2
 
 from camera.PhotoEffects import BeachEffectBundle
 from camera.PhotoEffects import HippieEffectBundle
@@ -8,6 +8,7 @@ from camera.PhotoEffects import SkiingEffectBundle
 from camera.PhotoEffects import SunnyEffectBundle, OldPhotoEffectBundle, GentlemanEffectBundle, RoyalEffectBundle
 from camera.PhotoEffects import UnderwaterEffectBundle
 from camera.PhotoEffects.TestEffectBundle import TestEffectBundle
+from camera.constants import TMP_DIR
 
 
 class Camera:
@@ -18,6 +19,7 @@ class Camera:
         self.cap = None
         self.frame_name = frame_name
         self.current_effect_bundle = None
+        self.current_frame = None
 
     def start_capturing(self):
         print('Start capturing')
@@ -34,6 +36,8 @@ class Camera:
             # Process image
             if self.current_effect_bundle:
                 frame = self.current_effect_bundle.apply(frame)
+
+            self.current_frame = frame
 
             cv2.imshow(self.frame_name, frame)
 
@@ -67,6 +71,23 @@ class Camera:
             self.current_effect_bundle = BeachEffectBundle()
         elif self.EffectBundleEnum.NO_FILTER == effect_enum:
             self.current_effect_bundle = None
+
+    def get_photo_name(self):
+        now = datetime.datetime.now()
+        return '[{}.{}.{}, {}:{}:{}:{}] captured_photo.jpg'.format(
+             now.year, now.month,
+             now.day, now.hour,
+             now.minute, now.second,
+             now.microsecond)
+
+    def save_photo(self):
+        if self.current_frame is not None:
+            photo_name = self.get_photo_name()
+            photo_dir = TMP_DIR + photo_name
+            cv2.imwrite(photo_dir, self.current_frame)
+            return photo_name
+        else:
+            raise Exception('current_frame is not set yet')
 
     class EffectBundleEnum(Enum):
         SUNNY = 'sunny'

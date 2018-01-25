@@ -1,6 +1,5 @@
 from camera.PhotoEffects import ColorMapPhotoEffect
 from camera.PhotoEffects import EffectBundle, AddObjectsPhotoEffect
-from camera.constants import ASSETS_DIR
 
 
 class GentlemanEffectBundle(EffectBundle):

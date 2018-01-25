@@ -21,7 +21,6 @@ class GreenScreenPhotoEffect(PhotoEffect):
 
         super().__init__()
         self.bg_image = bg_image
-        print(ASSETS_DIR + bg_image)
         self.cv_photo = cv2.imread(ASSETS_DIR + bg_image)
         if self.cv_photo is None:
             raise Exception('Cannot read photo file')
