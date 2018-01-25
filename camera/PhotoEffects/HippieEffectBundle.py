@@ -9,10 +9,10 @@ class HippieEffectBundle(EffectBundle):
         super().__init__()
 
         color_map_effect = ColorMapPhotoEffect(3)
-        object_effect = AddObjectsPhotoEffect('hippie.png',AddObjectsPhotoEffect.ObjectPositionEnum.ON)
+        object_effect = AddObjectsPhotoEffect('hippie.png', AddObjectsPhotoEffect.ObjectPositionEnum.ON)
 
-        self.effect_manager.add(color_map_effect)
         self.effect_manager.add(object_effect)
+        self.effect_manager.add(color_map_effect)
 
     def apply(self, image):
         return self.effect_manager.apply_all(image)

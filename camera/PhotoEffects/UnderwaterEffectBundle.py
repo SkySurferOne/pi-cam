@@ -9,9 +9,9 @@ class UnderwaterEffectBundle(EffectBundle):
     def __init__(self) -> None:
         super().__init__()
 
-        green_screen = GreenScreenPhotoEffect('underwater.png', 'red')
+        green_screen = GreenScreenPhotoEffect('underwater.png', 'green')
         color_map_effect = ColorMapPhotoEffect(4)
-        object_effect = AddObjectsPhotoEffect('snorkel.png',AddObjectsPhotoEffect.ObjectPositionEnum.AROUND)
+        object_effect = AddObjectsPhotoEffect('snorkel.png', AddObjectsPhotoEffect.ObjectPositionEnum.AROUND)
 
         self.effect_manager.add(green_screen)
         self.effect_manager.add(color_map_effect)

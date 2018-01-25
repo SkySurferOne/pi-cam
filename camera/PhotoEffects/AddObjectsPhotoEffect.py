@@ -23,7 +23,7 @@ class AddObjectsPhotoEffect(PhotoEffect):
         self.object_position = object_position
 
     def apply_filter(self, image):
-        cascPath = "haarcascade_frontalface_default.xml"
+        cascPath = ASSETS_DIR + "haarcascade_frontalface_default.xml"
         faceCascade = cv2.CascadeClassifier(cascPath)
         anterior = 0
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

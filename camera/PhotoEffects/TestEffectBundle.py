@@ -9,7 +9,7 @@ class TestEffectBundle(EffectBundle):
     def __init__(self) -> None:
         super().__init__()
 
-        green_screen = GreenScreenPhotoEffect('test_bg.jpeg', 'red')
+        green_screen = GreenScreenPhotoEffect('test_bg.jpeg', 'green')
         color_photo_effect = AddColorPhotoEffect(60, 0, 0)
         color_map_effect = ColorMapPhotoEffect(2)
 
