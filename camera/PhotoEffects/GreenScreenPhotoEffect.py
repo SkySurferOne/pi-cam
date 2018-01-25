@@ -46,8 +46,8 @@ class GreenScreenPhotoEffect(PhotoEffect):
             mask = cv2.add(mask1, mask2)
 
         elif self.screen_color == 'green':
-            green_lower = np.array([20, 100, 50])
-            green_upper = np.array([100, 255, 255])
+            green_lower = np.array([38, 50, 50])
+            green_upper = np.array([68, 255, 255])
 
             # threshold the HSV image to get only red colors
             mask = cv2.inRange(hsv, green_lower, green_upper)
